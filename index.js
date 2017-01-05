@@ -14,8 +14,14 @@ app.get('/', function(req, res) {
 });
 
 app.get('/whoami', function(req, res) {
+    function getClientIp(req) {
+        return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    };
 	var header = req.headers,
-		ip = req.connection.remoteAddress,
+		ip = getClientIp(req),
 		software = (header['user-agent'].match(/[^(]*(?=\))/) || [])[0],
 		lang = (header['accept-language'].split(',') || [])[0];
 	res.json({
