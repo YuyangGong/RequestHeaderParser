@@ -15,7 +15,7 @@ app.get('/', function(req, res) {
 
 app.get('/whoami', function(req, res) {
 	var header = req.headers,
-		ip = req.ip,
+		ip = req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip.replace(/::ffff:/, '');,
 		software = (header['user-agent'].match(/[^(]*(?=\))/) || [])[0],
 		lang = (header['accept-language'].split(',') || [])[0];
 	res.json({
